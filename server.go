@@ -21,6 +21,7 @@ type ServerOptions struct {
 	AuthForwarding    bool
 	EnableURLSource   bool
 	EnablePlaceholder bool
+	SignAWS           bool
 	Address           string
 	PathPrefix        string
 	ApiKey            string
