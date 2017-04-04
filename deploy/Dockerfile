@@ -34,7 +34,7 @@ RUN go get -u golang.org/x/net/context
 RUN go get -u github.com/saffron-digital/imaginary
 
 # Run the outyet command by default when the container starts.
-ENTRYPOINT ["/go/bin/imaginary"]
+ENTRYPOINT ["/go/bin/imaginary", "--cors", "--gzip", "--enable-url-source", "--enable-aws-signing"]
 
 # Expose the server TCP port
 EXPOSE 9000
