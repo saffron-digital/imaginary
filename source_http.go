@@ -6,6 +6,9 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
+
+	"github.com/smartystreets/go-aws-auth"
 )
 
 const ImageSourceTypeHttp ImageSourceType = "http"
@@ -84,6 +87,10 @@ func (s *HttpImageSource) setAuthorizationHeader(req *http.Request, ireq *http.R
 	}
 }
 
+func (s *HttpImageSource) signAWS(req *http.Request) {
+	awsauth.SignS3(req)
+}
+
 func parseURL(request *http.Request) (*url.URL, error) {
 	queryUrl := request.URL.Query().Get("url")
 	return url.Parse(queryUrl)
@@ -99,7 +106,15 @@ func newHTTPRequest(s *HttpImageSource, ireq *http.Request, method string, url *
 		s.setAuthorizationHeader(req, ireq)
 	}
 
+	if s.Config.SignAWS && isS3Url(req.URL) {
+		s.signAWS(req)
+	}
+
 	return req
+}
+
+func isS3Url(url *url.URL) bool {
+	return strings.HasSuffix(url.Host, ".amazonaws.com") && strings.Contains(url.Host, "s3")
 }
 
 func shouldRestrictOrigin(url *url.URL, origins []*url.URL) bool {

@@ -32,6 +32,7 @@ var (
 	aAuthForwarding    = flag.Bool("enable-auth-forwarding", false, "Forwards X-Forward-Authorization or Authorization header to the image source server. -enable-url-source flag must be defined. Tip: secure your server from public access to prevent attack vectors")
 	aEnableURLSource   = flag.Bool("enable-url-source", false, "Enable remote HTTP URL image source processing")
 	aEnablePlaceholder = flag.Bool("enable-placeholder", false, "Enable image response placeholder to be used in case of error")
+	aSignAWS           = flag.Bool("enable-aws-signing", false, "Sign AWS S3 urls")
 	aAlloweOrigins     = flag.String("allowed-origins", "", "Restrict remote image source processing to certain origins (separated by commas)")
 	aMaxAllowedSize    = flag.Int("max-allowed-size", 0, "Restrict maximum size of http image source (in bytes)")
 	aKey               = flag.String("key", "", "Define API key for authorization")
@@ -81,6 +82,7 @@ Options:
   -enable-url-source        Restrict remote image source processing to certain origins (separated by commas)
 	-enable-placeholder       Enable image response placeholder to be used in case of error [default: false]
   -enable-auth-forwarding   Forwards X-Forward-Authorization or Authorization header to the image source server. -enable-url-source flag must be defined. Tip: secure your server from public access to prevent attack vectors
+  -enable-aws-signing       Signs AWS S3 requests. -enable-url-source flag must be defined. Tip: secure your server from public access to prevent attack vectors
   -allowed-origins <urls>   Restrict remote image source processing to certain origins (separated by commas)
   -max-allowed-size <bytes> Restrict maximum size of http image source (in bytes)
   -certfile <path>          TLS certificate file path
@@ -119,6 +121,7 @@ func main() {
 		AuthForwarding:    *aAuthForwarding,
 		EnableURLSource:   *aEnableURLSource,
 		EnablePlaceholder: *aEnablePlaceholder,
+		SignAWS:           *aSignAWS,
 		PathPrefix:        *aPathPrefix,
 		ApiKey:            *aKey,
 		Concurrency:       *aConcurrency,
